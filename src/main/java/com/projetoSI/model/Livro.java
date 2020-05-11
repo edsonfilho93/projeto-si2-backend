@@ -1,6 +1,8 @@
 package com.projetoSI.model;
 
+import javax.persistence.Entity;
 
+@Entity
 public class Livro {
 	
 	private int id;
