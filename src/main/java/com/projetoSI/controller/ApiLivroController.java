@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetoSI.model.Livro;
+import com.projetoSI.repository.ApiLivroRepository;
 
 @RestController
 @RequestMapping("/livros")
@@ -26,28 +27,33 @@ public class ApiLivroController {
 	 *  5 - Excluir livro - deleteLivro(Int id)
 	 *  
 	 */
-	
+		
 	@GetMapping()
 	public List<Livro> getLivros() {
-		return null;
+		ApiLivroRepository livroRepository = new ApiLivroRepository();
+		return livroRepository.getAll();
 	}
 	
-	@GetMapping("/{ id }")
+	@GetMapping("/{id}")
 	public Livro getLivroId(@PathVariable int id) {
-		return null;
+		ApiLivroRepository livroRepository = new ApiLivroRepository();
+		
+		return livroRepository.getById(id);
 	}
 	
 	@PostMapping()
 	public void addLivro(@RequestBody Livro livro) {
+		ApiLivroRepository livroRepository = new ApiLivroRepository();
 		
+		livroRepository.add(livro);
 	}
 	
-	@PutMapping("/atualizar/{ id }")
+	@PutMapping("/atualizar/{id}")
 	public void editLivro(@PathVariable int id, @RequestBody Livro livro) {
 		
 	}
 
-	@DeleteMapping("/{ id }")
+	@DeleteMapping("/{id}")
 	public void deleteLivro(@PathVariable int id) {
 		
 	}

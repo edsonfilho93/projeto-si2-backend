@@ -4,11 +4,11 @@
      http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
     version="2.0">
     
-    <persistence-unit name="escolaConfig">
+    <persistence-unit name="apiLivrosConfig">
        		
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/projetosidb" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/projetosidb?useTimezone=true&amp;serverTimezone=UTC" />
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="92256254" />
             

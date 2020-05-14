@@ -1,13 +1,27 @@
 package com.projetoSI.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "livros")
 public class Livro {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(length = 60, nullable = false)
 	private String titulo;
+	
+	@Column(length = 60, nullable = false)
 	private String editora;
+	
+	@Column(nullable = true)
 	private String qtdPaginas;
 
 
