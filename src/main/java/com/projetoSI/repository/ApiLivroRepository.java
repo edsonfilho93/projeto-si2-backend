@@ -46,63 +46,78 @@ public class ApiLivroRepository {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Livro> getAll() throws Exception {
 		try {
-
+			
 			EntityManager entityManager = entityManagerFactory.createEntityManager();
 			Query query = entityManager.createQuery("SELECT l FROM Livro l");
 
 			return (List<Livro>) query.getResultList();
-
+			
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public List<?> getById(int id) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		String sql = "SELECT l FROM Livro l WHERE id = " + String.valueOf(id);
+
 		try {
-
-			EntityManager entityManager = entityManagerFactory.createEntityManager();
-			String sql = "SELECT l FROM Livro l WHERE id = " + String.valueOf(id);
-
+			
 			return entityManager.createQuery(sql).getResultList();
 
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
+		} finally {
+			entityManager.close();
 		}
 	}
 
 	public void delete(int id) {
-		try {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = entityManager.getTransaction();
 
-			EntityManager entityManager = entityManagerFactory.createEntityManager();
-			String sql = "DELETE FROM Livro WHERE id = " + String.valueOf(id);
-
-			entityManager.createQuery(sql).executeUpdate();
-
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public void edit(int id) {
+		Livro livro = entityManager.find(Livro.class, id);
 
 		try {
 
-			EntityManager entityManager = entityManagerFactory.createEntityManager();
-			Livro livro = (Livro) getById(id).get(0);
+			transaction.begin();
 
-			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE livro SET");
-			sql.append("titulo = " + livro.getTitulo());
-			sql.append("qtdPaginas = " + livro.getQtdPaginas());
-			sql.append("codEditora = " + String.valueOf(livro.getCodEditora()));
-			sql.append("WHERE id = " + String.valueOf(id));
+			entityManager.remove(livro);
 
-			entityManager.createQuery(sql.toString()).executeUpdate();
+			transaction.commit();
+
 		} catch (Throwable e) {
-			throw new RuntimeException(e);
+			transaction.rollback();
+		} finally {
+			entityManager.close();
 		}
 	}
-	
+
+	public void edit(int id, Livro livro) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = entityManager.getTransaction();
+
+		Livro livroAux = entityManager.find(Livro.class, id);
+		
+		livroAux.setTitulo(livro.getTitulo());
+		livroAux.setCodEditora(livro.getCodEditora());
+		livroAux.setQtdPaginas(livro.getQtdPaginas());
+
+		try {
+
+			transaction.begin();
+
+			entityManager.merge(livroAux);
+
+			transaction.commit();
+
+		} catch (Throwable e) {
+			transaction.rollback();
+		} finally {
+			entityManager.close();
+		}
+	}
 }

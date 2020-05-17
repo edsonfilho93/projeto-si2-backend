@@ -111,7 +111,7 @@ public class ApiLivroController {
 				return ResponseEntity.badRequest().body(response);
 			}
 			
-			ApiLivroRepository.instance().edit(id);
+			ApiLivroRepository.instance().edit(id, livro);
 			response.setDados((Livro) queryResult.get(0));
 			response.setStatusHTTP(HttpStatus.OK.value());
 
@@ -137,7 +137,7 @@ public class ApiLivroController {
 
 				return ResponseEntity.badRequest().body(response);
 			}
-
+			
 			ApiLivroRepository.instance().delete(id);
 			response.setDados(id);
 			response.setStatusHTTP(HttpStatus.OK.value());
