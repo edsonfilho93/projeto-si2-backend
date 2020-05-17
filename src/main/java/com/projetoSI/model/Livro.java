@@ -6,22 +6,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "livros")
+@Table(name = "livro")
 public class Livro {
 	
+	private static final String MSG_NOT_NULL = "O campo não pode ser nulo";
+	private static final String MSG_NOT_EMPTY = "O campo não pode ser vazio";
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
 	@Column(length = 60, nullable = false)
+	@NotNull(message = MSG_NOT_NULL)
+	@NotEmpty(message = MSG_NOT_EMPTY)
 	private String titulo;
 	
-	@Column(length = 60, nullable = false)
-	private String editora;
-	
-	@Column(nullable = true)
+	@Column(nullable = false)
+	@NotNull(message = MSG_NOT_NULL)
+	private int codEditora;
+
+	@Column(nullable = false)
+	@NotNull(message = MSG_NOT_NULL)
+	@NotEmpty(message = MSG_NOT_EMPTY)
+	@Min(value = 20, message  = "O livro deve conter no mínimo 20 páginas.")
 	private String qtdPaginas;
 
 
@@ -32,6 +44,14 @@ public class Livro {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public int getCodEditora() {
+		return codEditora;
+	}
+	
+	public void setCodEditora(int codEditora) {
+		this.codEditora = codEditora;
+	}
 
 	public String getTitulo() {
 		return titulo;
@@ -39,14 +59,6 @@ public class Livro {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
-	}
-
-	public String getEditora() {
-		return editora;
-	}
-
-	public void setEditora(String editora) {
-		this.editora = editora;
 	}
 
 	public String getQtdPaginas() {
